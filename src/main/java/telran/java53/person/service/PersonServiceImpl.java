@@ -66,7 +66,7 @@ public class PersonServiceImpl implements PersonService {
 		return  personRepository.findByAddressCityIgnoreCase(city)
 				.map(p -> modelMapper.map(p, PersonDto.class))
 				.toArray(PersonDto[]::new);
-//		return null;
+
 	}
 	@Transactional
 	@Override
@@ -74,7 +74,7 @@ public class PersonServiceImpl implements PersonService {
 		return 	personRepository.findByNameIgnoreCase(name)
 				.map(p -> modelMapper.map(p, PersonDto.class))
 				.toArray(PersonDto[]::new);
-//		return null;
+
 	}
 	@Transactional
 	@Override
@@ -84,13 +84,15 @@ public class PersonServiceImpl implements PersonService {
 		return personRepository.findByBirthDateBetween(from, to)
 				.map(p -> modelMapper.map(p, PersonDto.class))
 				.toArray(PersonDto[]::new);
-//		return null;
-	}
 
+	}
+	@Transactional
 	@Override
 	public Iterable<CityPopulationDto> getCitiesPopulation() {
-		// TODO Auto-generated method stub
-		return null;
+		return personRepository.findPopulationInEachCity()
+			.map(a -> new CityPopulationDto(a[1].toString(),  Integer.parseInt(a[0].toString())))
+			.toList();
+		
 	}
 
 }
