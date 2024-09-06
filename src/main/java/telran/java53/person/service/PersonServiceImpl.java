@@ -48,7 +48,7 @@ public class PersonServiceImpl implements PersonService {
 	public PersonDto updatePersonName(Integer id, String name) {
 		Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
 		person.setName(name);
-		personRepository.save(person);
+//		personRepository.save(person);
 		return modelMapper.map(person, PersonDto.class);
 	}
 	@Transactional
@@ -56,11 +56,11 @@ public class PersonServiceImpl implements PersonService {
 	public PersonDto updatePersonAddress(Integer id, AddressDto addressDto) {
 		Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
 		person.setAddress(modelMapper.map(addressDto, Address.class));
-		personRepository.save(person);
+//		personRepository.save(person);
 		return modelMapper.map(person, PersonDto.class);
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	@Override
 	public PersonDto[] findPersonsByCity(String city) {
 		return  personRepository.findByAddressCityIgnoreCase(city)
@@ -68,7 +68,7 @@ public class PersonServiceImpl implements PersonService {
 				.toArray(PersonDto[]::new);
 
 	}
-	@Transactional
+	@Transactional(readOnly = true)
 	@Override
 	public PersonDto[] findPersonsByName(String name) {
 		return 	personRepository.findByNameIgnoreCase(name)
@@ -76,7 +76,7 @@ public class PersonServiceImpl implements PersonService {
 				.toArray(PersonDto[]::new);
 
 	}
-	@Transactional
+	@Transactional(readOnly = true)
 	@Override
 	public PersonDto[] findPersonsBetweenAge(Integer minAge, Integer maxAge) {
 		LocalDate from = LocalDate.now().minusYears(maxAge);
@@ -86,13 +86,14 @@ public class PersonServiceImpl implements PersonService {
 				.toArray(PersonDto[]::new);
 
 	}
-	@Transactional
+//	@Transactional(readOnly = true)
 	@Override
 	public Iterable<CityPopulationDto> getCitiesPopulation() {
-		return personRepository.findPopulationInEachCity()
-			.map(a -> new CityPopulationDto(a[1].toString(),  Integer.parseInt(a[0].toString())))
-			.toList();
+//		return personRepository.findPopulationInEachCity()
+//			.map(a -> new CityPopulationDto(a[1].toString(),  Integer.parseInt(a[0].toString())))
+//			.toList();
 		
+		return personRepository.getCityPopulation();
 	}
 
 }
