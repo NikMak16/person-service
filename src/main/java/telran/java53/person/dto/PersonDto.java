@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 import lombok.Getter;
+import lombok.Setter;
 
 
 @Getter
@@ -18,6 +19,7 @@ import lombok.Getter;
 	@Type(name="employee", value = EmployeeDto.class),
 	@Type(name="person", value = PersonDto.class)
 })
+@Setter
 public class PersonDto {
 	Integer id;
 	String name;
